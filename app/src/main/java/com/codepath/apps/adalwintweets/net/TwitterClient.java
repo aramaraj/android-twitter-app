@@ -1,7 +1,9 @@
 package com.codepath.apps.adalwintweets.net;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.codepath.apps.adalwintweets.models.PostRequestParams;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -33,19 +35,52 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	//TODO Time line method
-	public void getTimeLine(JsonHttpResponseHandler handler) {
+	public void getTimeLine(int page,JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-
+		Log.d("Response to Srting",params.toString());
+		page=page+1;
+		Log.d("Response to Srting 1",String.valueOf(page));
 		params.put("count",25);
-		params.put("since_id",1);
+		params.put("since_id",page);
 		getClient().get(apiUrl, params, handler);
 
 	}
 	//Composing a tweet
+	//https://api.twitter.com/1.1/users/show.json?screen_name=twitterdev
+	public void getUserInfo(JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("users/show.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("screen_name","twitterdev");
+		getClient().get(apiUrl, params, handler);
 
+	}
+	//Composin
 
+	//Composing a tweet
+	//https://api.twitter.com/1.1/users/show.json?screen_name=twitterdev
+	public void postMessage(PostRequestParams postRequestParams,JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("direct_messages/new.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("screen_name",postRequestParams.getTweetScreenName());
+		params.put("text",postRequestParams.getTweetBody());
+		System.out.println(postRequestParams.getTweetScreenName()+"This is"+postRequestParams.getTweetBody());
+		getClient().post(apiUrl, params, handler);
+
+	}
+
+	public void postTweet(PostRequestParams postRequestParams,JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		//params.put("screen_name",postRequestParams.getTweetScreenName());
+		params.put("status",postRequestParams.getTweetBody());
+		getClient().post(apiUrl, params, handler);
+
+	}
 
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

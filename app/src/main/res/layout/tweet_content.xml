@@ -6,8 +6,9 @@
     tools:context=".activities.TimelineActivity"
     android:weightSum="1">
 
+
     <TextView
-        android:id="@+id/tvScreenName"
+        android:id="@+id/tvUsernName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title"
@@ -16,7 +17,16 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivUserCover"
         android:layout_toEndOf="@+id/ivUserCover" />
-
+    <TextView
+        android:id="@+id/tvScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="14sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_toRightOf="@+id/ivUserCover"
+        android:layout_toEndOf="@+id/ivUserCover"
+        android:layout_below="@+id/tvUsernName"/>
     <TextView
         android:id="@+id/tvBody"
         android:layout_width="wrap_content"

@@ -25,7 +25,7 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet> {
         private static class ViewHolder {
             public ImageView ivCover;
             public TextView tvScreenName;
-            public TextView user;
+            public TextView tvUsernName;
             public TextView body;
             public TextView created_at;
         }
@@ -48,6 +48,7 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet> {
                 convertView = inflater.inflate(R.layout.tweet_content, parent, false);
                 viewHolder.ivCover = (ImageView)convertView.findViewById(R.id.ivUserCover);
                 viewHolder.tvScreenName = (TextView)convertView.findViewById(R.id.tvScreenName);
+                viewHolder.tvUsernName = (TextView)convertView.findViewById(R.id.tvUsernName);
                 viewHolder.body = (TextView)convertView.findViewById(R.id.tvBody);
                 viewHolder.created_at = (TextView)convertView.findViewById(R.id.tvDate);
                 convertView.setTag(viewHolder);
@@ -58,6 +59,7 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet> {
             viewHolder.tvScreenName.setText(tweet.getUser().getScreenName());
             viewHolder.body.setText(tweet.getBody());
             viewHolder.created_at.setText(tweet.getCreatedAt());
+            viewHolder.tvUsernName.setText(tweet.getUser().getName());
             Picasso.with(getContext()).load(tweet.getUser().getProfileImage()).
                     transform(new RoundedCornersTransformation(5,5)).into(viewHolder.ivCover);
             //Picasso.with(getContext()).load(book.getPosterUrl()).into(viewHolder.ivCover);
