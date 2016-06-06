@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.codepath.apps.adalwintweets.R;
 import com.codepath.apps.adalwintweets.app.TwitterApplication;
 import com.codepath.apps.adalwintweets.models.PostRequestParams;
+import com.codepath.apps.adalwintweets.models.Tweet;
 import com.codepath.apps.adalwintweets.net.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -27,6 +28,8 @@ public class TweetActivity extends AppCompatActivity {
     Button btnCancel;
     PostRequestParams  postReqParams;
     boolean validateFields = false;
+    private  Tweet tweet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +65,16 @@ public class TweetActivity extends AppCompatActivity {
         });
     }
     public void onTweet(View v){
+
         postReqParams=new PostRequestParams(String.valueOf(etBody.getText()));
         twitterClient.postTweet(postReqParams,new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response ) {
                 super.onSuccess(statusCode, headers, response);
+                System.out.println("Response from POST is  "+response.toString());
+                tweet = Tweet.fromJSON(response);
+                System.out.println("text"+tweet.getBody()+"::tweet.id::"+tweet.getId()+"User"+tweet.getUser().getName());
+
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject response) {
@@ -75,6 +83,7 @@ public class TweetActivity extends AppCompatActivity {
             }
         });
         Intent intent = new Intent();
+        intent.putExtra("tweetObject",tweet);
         setResult(RESULT_OK, intent);
         this.finish();
     }
@@ -85,11 +94,8 @@ public class TweetActivity extends AppCompatActivity {
     }
 
     public boolean validateFields(){
-        //String address=String.valueOf(etAddress.getText());
         String body=String.valueOf(etBody.getText());
-        //if(!address.isEmpty()){
-          //  validateFields=true;
-        //}
+
         if(!body.isEmpty()){
             validateFields=true;
         }

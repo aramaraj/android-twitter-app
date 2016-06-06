@@ -23,6 +23,7 @@ import org.scribe.builder.api.TwitterApi;
  * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
+
 public class TwitterClient extends OAuthBaseClient {
 	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
 	public static final String REST_URL = "https://api.twitter.com/1.1/"; // Change this, base API URL
@@ -37,15 +38,20 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	//TODO Time line method
-	public void getTimeLine(int page,JsonHttpResponseHandler handler) {
+	public void getTimeLine(long max_id,JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		Log.d("Response to Srting",params.toString());
-		page=page+1;
-		Log.d("Response to Srting 1",String.valueOf(page));
+		Log.d("Response to Srting 1",String.valueOf(max_id));
 		params.put("count",25);
-		params.put("since_id",page);
+
+		if(max_id>0){
+			params.put("max_id",(max_id-1));
+		}
+		else{
+			params.put("since_id",1);
+		}
 		getClient().get(apiUrl, params, handler);
 
 	}
@@ -61,7 +67,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 	//Composin
 
-	//Composing a tweet
+	//Composing a MESSAGE
 	//https://api.twitter.com/1.1/users/show.json?screen_name=twitterdev
 	public void postMessage(PostRequestParams postRequestParams,JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("direct_messages/new.json");

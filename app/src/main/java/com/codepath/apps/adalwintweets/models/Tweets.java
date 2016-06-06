@@ -1,7 +1,5 @@
 package com.codepath.apps.adalwintweets.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 public class Tweets implements Serializable{
 
     private static ArrayList<Tweet> tweets;
-    private static int since_id;
+    private static long max_id;
 
     public ArrayList<Tweet> getTweet() {
         return tweets;
@@ -25,18 +23,20 @@ public class Tweets implements Serializable{
     }
 
 
-    public int getSince_id() {
-        return since_id;
+    public long getMax_id() {
+        return max_id;
     }
 
-    public void setSince_id(int since_id) {
-        this.since_id = since_id;
+    public void setMax_id(long since_id) {
+        this.max_id = max_id;
     }
 
     public static ArrayList<Tweet> getModelsFromTweets(JSONArray jsonArray){
         tweets = new ArrayList<Tweet>();
-        Tweets.since_id=since_id;
+
+
         User user = new User();
+        long temp1=0;
         // Process each result in json array, decode and convert to business
         // object
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -46,7 +46,14 @@ public class Tweets implements Serializable{
                 Tweet tweet = Tweet.fromJSON(tweetJson);
                 if(tweet!=null){
                     tweets.add(tweet);
-                    Log.d("Tweets ::",tweet.toString());
+                    if(temp1==0) {
+                        Tweets.max_id = tweet.getId();
+                        temp1 = tweet.getId();
+                    }
+                    else{
+                        Tweets.max_id=Math.min(temp1,tweet.getId());
+                        temp1 = Tweets.max_id;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

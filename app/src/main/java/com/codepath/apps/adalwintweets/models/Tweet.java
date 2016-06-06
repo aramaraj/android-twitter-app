@@ -5,6 +5,7 @@ import android.text.format.DateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -13,7 +14,7 @@ import java.util.Locale;
  * Created by aramar1 on 6/3/16.
  */
 //Parse the Json + Store the Data +
-public class Tweet {
+public class Tweet implements Serializable{
     private String body;
     private long id;//unique id for  the Tweet.
     private User user;
@@ -60,6 +61,7 @@ public class Tweet {
             tweet.createdAt = getRelativeTimeAgo(jsonObject.getString("created_at"));
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
 
+
         }catch (JSONException jsone){
             jsone.printStackTrace();
         }
@@ -83,8 +85,6 @@ public class Tweet {
 
         return relativeDate;
     }
-
-
 
 }
 

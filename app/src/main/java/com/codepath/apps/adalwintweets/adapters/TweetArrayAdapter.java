@@ -50,6 +50,7 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet> {
                 viewHolder.tvScreenName = (TextView)convertView.findViewById(R.id.tvScreenName);
                 viewHolder.tvUsernName = (TextView)convertView.findViewById(R.id.tvUsernName);
                 viewHolder.body = (TextView)convertView.findViewById(R.id.tvBody);
+
                 viewHolder.created_at = (TextView)convertView.findViewById(R.id.tvDate);
                 convertView.setTag(viewHolder);
             } else {
@@ -66,7 +67,10 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet> {
             // Return the completed view to render on screen
             return convertView;
         }
-    }
+
+
+
+}
 
 
 

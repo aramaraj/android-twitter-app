@@ -7,7 +7,7 @@
         android:id="@+id/menu_item_tweet"
         app:showAsAction="always"
         android:title="New Tweet"
-        android:icon="@mipmap/ic_launcher_twitter"
+        android:icon="@mipmap/ic_launcher_compose"
         />
 
     <item

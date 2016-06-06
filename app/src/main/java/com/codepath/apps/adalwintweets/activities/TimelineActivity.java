@@ -35,7 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
     private Tweets tweetsModel;
     private final int TIMELINE_REQUEST_CODE=1001;
     private SwipeRefreshLayout swipeContainer;
-
+    private long max_id_page=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class TimelineActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
         getSupportActionBar().setTitle("Tweets"); // set the top title
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher_twitter);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         twitterClient = TwitterApplication.getRestClient();
 
@@ -58,7 +58,8 @@ public class TimelineActivity extends AppCompatActivity {
         lvTimeline.setOnScrollListener(new EndlessRecylcerScrollerListener(){
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                populateTimeline(page);
+                System.out.println("739633557509918721 ON load more "+page +":::max_id_page"+max_id_page);
+                populateTimeline(max_id_page);
                 return true;
             }
             @Override
@@ -66,9 +67,6 @@ public class TimelineActivity extends AppCompatActivity {
                 return 0;
             }
         });
-
-
-
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -88,18 +86,20 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
          }
     //make an async request and list view
-    private void populateTimeline(final int page) {
-
+    private void populateTimeline(final long page) {
+        tweetsModel = new Tweets();
         twitterClient.getTimeLine(page,new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers,JSONArray response ) {
                 super.onSuccess(statusCode, headers,response);
                 final ArrayList<Tweet> tweets = tweetsModel.getModelsFromTweets(response);
-                tweetArrayAdapter.clear();
+                if(page == 0){
+                    tweetArrayAdapter.clear();
+                }
+                max_id_page=tweetsModel.getMax_id();
                 tweetArrayAdapter.addAll(tweets);
                 tweetArrayAdapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
-
             }
 
             @Override
@@ -126,7 +126,6 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater findMenuItems = getMenuInflater();
         findMenuItems.inflate(R.menu.menu_timeline, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
     @Override
@@ -137,7 +136,6 @@ public class TimelineActivity extends AppCompatActivity {
             return true;
         }
         if(item.getItemId() == R.id.menu_item_logout){
-            System.out.println("menu item logout called");
             twitterClient.clearAccessToken();
             TimelineActivity.this.finish();
             return true;
@@ -151,10 +149,14 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TIMELINE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                System.out.println("Calling the on ACtivity Success populate timeline");
+                Log.d("DEBUG -","DoneCalling the on ACtivity Success populate timeline");
+                Tweet tweet1 = (Tweet)data.getSerializableExtra("tweetObject");
+                //tweets.add(0,tweet1);
+                //tweetArrayAdapter.addAll(tweets);
+                //tweetArrayAdapter.insert(tweet1,0);
+                //this.tweetArrayAdapter.notifyDataSetChanged();
                 populateTimeline(0);
-                System.out.println("Calling the on ACtivity Success");
-                Log.d("DEBUG --> ONACTIVITY","Done");
+                Log.d("DEBUG -","Done");
             }
         }
     }

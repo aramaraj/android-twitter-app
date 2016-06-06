@@ -3,6 +3,8 @@ package com.codepath.apps.adalwintweets.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by aramar1 on 6/3/16.
  *"id":71201743,
@@ -16,7 +18,7 @@ import org.json.JSONObject;
  *
  *
  */
-public class User {
+public class User implements Serializable{
     private String name;
     private String screenName;
     private long uid;
