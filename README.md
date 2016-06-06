@@ -50,14 +50,7 @@ The following **additional** features are implemented:
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
-## Demo of View Tweets and Oauth
-<img src='/DemoViewAndOauth.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-
-## Demo of LogOut And Compose
-<img src='/LogOutAndCompose.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-
+<img src='/TweetDemo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ## Notes
 
