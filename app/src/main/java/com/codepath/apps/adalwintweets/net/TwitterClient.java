@@ -31,7 +31,9 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CALLBACK_URL = "oauth://adalwintweets"; // Change this (here and in manifest)
 
 	public TwitterClient(Context context) {
+
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
+		context.getApplicationInfo();
 	}
 
 	//TODO Time line method

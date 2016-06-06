@@ -2,6 +2,7 @@ package com.codepath.apps.adalwintweets.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,6 +34,8 @@ public class TimelineActivity extends AppCompatActivity {
     private ArrayList<Tweet> tweets;
     private Tweets tweetsModel;
     private final int TIMELINE_REQUEST_CODE=1001;
+    private SwipeRefreshLayout swipeContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class TimelineActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         twitterClient = TwitterApplication.getRestClient();
-        populateUserInfo();
+
         populateTimeline(0);
 
         lvTimeline.setOnScrollListener(new EndlessRecylcerScrollerListener(){
@@ -66,7 +69,24 @@ public class TimelineActivity extends AppCompatActivity {
 
 
 
-    }
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                populateTimeline(0);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+         }
     //make an async request and list view
     private void populateTimeline(final int page) {
 
@@ -75,8 +95,11 @@ public class TimelineActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers,JSONArray response ) {
                 super.onSuccess(statusCode, headers,response);
                 final ArrayList<Tweet> tweets = tweetsModel.getModelsFromTweets(response);
+                tweetArrayAdapter.clear();
                 tweetArrayAdapter.addAll(tweets);
                 tweetArrayAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+
             }
 
             @Override
@@ -103,6 +126,7 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater findMenuItems = getMenuInflater();
         findMenuItems.inflate(R.menu.menu_timeline, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
     @Override
@@ -110,6 +134,12 @@ public class TimelineActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.menu_item_tweet){
             Intent intent = new Intent(this, TweetActivity.class);
             startActivityForResult(intent, TIMELINE_REQUEST_CODE);
+            return true;
+        }
+        if(item.getItemId() == R.id.menu_item_logout){
+            System.out.println("menu item logout called");
+            twitterClient.clearAccessToken();
+            TimelineActivity.this.finish();
             return true;
         }
         else{
