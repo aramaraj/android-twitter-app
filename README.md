@@ -1,13 +1,4 @@
 
-
-
-
-
-
-
-
-
-
 # Project 3 - *Android-Twitter-App*
 
 **Android-Twitter-Appp** is an android app that allows a user to view his Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
@@ -59,11 +50,11 @@ The following **additional** features are implemented:
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
-
-
-Demo of View Tweets and Oauth
+## Demo of View Tweets and Oauth
 <img src='/DemoViewAndOauth.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-Demo of LogOut And Compose
+
+
+## Demo of LogOut And Compose
 <img src='/LogOutAndCompose.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
