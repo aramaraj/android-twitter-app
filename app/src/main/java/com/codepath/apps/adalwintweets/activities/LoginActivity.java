@@ -4,10 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.apps.adalwintweets.R;
+import com.codepath.apps.adalwintweets.app.TwitterApplication;
+import com.codepath.apps.adalwintweets.models.User;
 import com.codepath.apps.adalwintweets.net.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
 
 
 //login activity where the users would sign in
@@ -31,10 +37,26 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-
+		getLoggedInUserDetails();
 		Intent i = new Intent(this,TimelineActivity.class);
 		startActivity(i);
-		//Toast.makeText(this, "Login Success	", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Login Success	", Toast.LENGTH_SHORT).show();
+	}
+	private void getLoggedInUserDetails() {
+		TwitterApplication.getRestClient().getCurrentUser(new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+				super.onSuccess(statusCode,headers,response);
+				User user = new User();
+				user=user.fromJSON(response);
+				TwitterApplication.setLoggedInUser(user);
+			}
+
+			@Override
+			public void onFailure(int statusCode,cz.msebera.android.httpclient.Header[] headers , Throwable error, JSONObject response) {
+				super.onFailure(statusCode,headers , error, response);
+			}
+		});
 	}
 
 	// OAuth authentication flow failed, handle the error

@@ -2,6 +2,7 @@ package com.codepath.apps.adalwintweets.app;
 
 import android.content.Context;
 
+import com.codepath.apps.adalwintweets.models.User;
 import com.codepath.apps.adalwintweets.net.TwitterClient;
 
 /*
@@ -15,7 +16,7 @@ import com.codepath.apps.adalwintweets.net.TwitterClient;
  */
 public class TwitterApplication extends com.activeandroid.app.Application {
 	private static Context context;
-
+	private static User loggedInUser;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -25,4 +26,13 @@ public class TwitterApplication extends com.activeandroid.app.Application {
 	public static TwitterClient getRestClient() {
 		return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterApplication.context);
 	}
+
+	public static User getLoggedInUser() {
+		return loggedInUser;
+	}
+
+	public static void setLoggedInUser(User loggedInUser) {
+		TwitterApplication.loggedInUser = loggedInUser;
+	}
+
 }

@@ -13,6 +13,7 @@ import com.codepath.apps.adalwintweets.R;
 import com.codepath.apps.adalwintweets.app.TwitterApplication;
 import com.codepath.apps.adalwintweets.models.PostRequestParams;
 import com.codepath.apps.adalwintweets.models.Tweet;
+import com.codepath.apps.adalwintweets.models.User;
 import com.codepath.apps.adalwintweets.net.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -35,10 +36,28 @@ public class TweetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet);
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
-        getSupportActionBar().setTitle("Compose New Tweet"); // set the top title
+        User loggedInUser = TwitterApplication.getLoggedInUser();
+        if (loggedInUser != null) {
+            try{
+                getSupportActionBar().setTitle(loggedInUser.getName()); // set the top title
+                //InputStream URLcontent = (InputStream) new URL(loggedInUser.getProfileImage()).getContent();
+                //Drawable image = Drawable.createFromStream(URLcontent,);
+                //getSupportActionBar().setLogo(image);
+                //getSupportActionBar().setLogo(image);
+                getSupportActionBar().setLogo(R.mipmap.ic_launcher_twitter);
+            }catch(Exception e){
+            }
+        }else{
+            getSupportActionBar().setTitle(loggedInUser.getName()); // set the top title
+            getSupportActionBar().setLogo(R.mipmap.ic_launcher_twitter);
+        }
+
+
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         twitterClient = TwitterApplication.getRestClient();
         //etAddress=(EditText)findViewById(R.id.etTweetAddress);
         etBody = (EditText)findViewById(R.id.etBody);
@@ -63,6 +82,10 @@ public class TweetActivity extends AppCompatActivity {
                 onCancel();
             }
         });
+
+
+
+
     }
     public void onTweet(View v){
 
@@ -101,4 +124,6 @@ public class TweetActivity extends AppCompatActivity {
         }
         return validateFields;
     }
+
+
 }
