@@ -97,6 +97,10 @@ public class TweetActivity extends AppCompatActivity {
                 System.out.println("Response from POST is  "+response.toString());
                 tweet = Tweet.fromJSON(response);
                 System.out.println("text"+tweet.getBody()+"::tweet.id::"+tweet.getId()+"User"+tweet.getUser().getName());
+                Intent intent = new Intent();
+                intent.putExtra("tweetObject",tweet);
+                setResult(RESULT_OK, intent);
+                finish();
 
             }
             @Override
@@ -105,10 +109,8 @@ public class TweetActivity extends AppCompatActivity {
                 System.out.println(response.toString());
             }
         });
-        Intent intent = new Intent();
-        intent.putExtra("tweetObject",tweet);
-        setResult(RESULT_OK, intent);
-        this.finish();
+
+
     }
     public void onCancel(){
         Intent intent = new Intent();
