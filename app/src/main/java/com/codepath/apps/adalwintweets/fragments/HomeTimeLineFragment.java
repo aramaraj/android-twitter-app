@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.apps.adalwintweets.R;
@@ -29,7 +30,7 @@ import cz.msebera.android.httpclient.Header;
 /**
  * Created by aramar1 on 6/8/16.
  */
-public class TweetsListFragment extends Fragment implements OnRefreshListener {
+public class HomeTimeLineFragment extends Fragment implements OnRefreshListener {
 
     TwitterClient twitterClient;
     private SwipeRefreshLayout swipeContainer;
@@ -45,7 +46,7 @@ public class TweetsListFragment extends Fragment implements OnRefreshListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.fragement_tweets_list,parent,false);
+        View view = inflater.inflate(R.layout.fragement_tweets_list,parent,false);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         lvTimeline= (ListView)view.findViewById(R.id.lvTweets);
         // Setup refresh listener which triggers new data loading
@@ -82,6 +83,13 @@ public class TweetsListFragment extends Fragment implements OnRefreshListener {
             }
         });
 
+        lvTimeline.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+       
+    });
 
 
         return view;
@@ -99,8 +107,8 @@ public class TweetsListFragment extends Fragment implements OnRefreshListener {
         super.onCreate(savedInstanceState);
         tweets = new ArrayList<Tweet>();
         twitterClient = TwitterApplication.getRestClient();
-
-        }
+        populateTimeline(0);
+    }
 
     @Override
     public void onRefresh() {
@@ -114,7 +122,6 @@ public class TweetsListFragment extends Fragment implements OnRefreshListener {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
-                System.out.println(response.toString());
                 final ArrayList<Tweet> tweets = tweetsModel.getModelsFromTweets(response);
                 if(max_id_page == 0){
                     populateTimeline(0);

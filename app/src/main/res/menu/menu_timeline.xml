@@ -9,11 +9,19 @@
         android:title="New Tweet"
         android:icon="@mipmap/ic_launcher_compose"
         />
+    <item
+        android:id="@+id/menu_item_profile"
+        app:showAsAction="always"
+        android:title="New Tweet"
+        android:icon="@mipmap/profile_icon"
 
+        />
     <item
         android:id="@+id/menu_item_logout"
         app:showAsAction="always"
         android:title="New Tweet"
         android:icon="@mipmap/ic_launcher_logout"
         />
+
+
 </menu>

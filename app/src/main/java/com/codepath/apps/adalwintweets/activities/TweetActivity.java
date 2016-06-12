@@ -82,10 +82,6 @@ public class TweetActivity extends AppCompatActivity {
                 onCancel();
             }
         });
-
-
-
-
     }
     public void onTweet(View v){
 
@@ -94,7 +90,6 @@ public class TweetActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response ) {
                 super.onSuccess(statusCode, headers, response);
-                System.out.println("Response from POST is  "+response.toString());
                 tweet = Tweet.fromJSON(response);
                 System.out.println("text"+tweet.getBody()+"::tweet.id::"+tweet.getId()+"User"+tweet.getUser().getName());
                 Intent intent = new Intent();
@@ -106,7 +101,6 @@ public class TweetActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject response) {
                 super.onFailure(statusCode, headers, error, response);
-                System.out.println(response.toString());
             }
         });
 

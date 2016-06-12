@@ -9,7 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.adalwintweets.R;
+import com.codepath.apps.adalwintweets.app.TwitterApplication;
 import com.codepath.apps.adalwintweets.models.Tweet;
+import com.codepath.apps.adalwintweets.models.User;
+import com.codepath.apps.adalwintweets.net.TwitterClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,8 +22,9 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 /**
  * Created by aramar1 on 6/3/16.
  */
-public class TweetArrayAdapter  extends ArrayAdapter<Tweet> {
-
+public class TweetArrayAdapter  extends ArrayAdapter<Tweet>  {
+        TwitterClient twitterClient= TwitterApplication.getRestClient();
+         User userParcel;
         // View lookup cache
         private static class ViewHolder {
             public ImageView ivCover;
@@ -63,10 +67,15 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet> {
             viewHolder.tvUsernName.setText(tweet.getUser().getName());
             Picasso.with(getContext()).load(tweet.getUser().getProfileImage()).
                     transform(new RoundedCornersTransformation(5,5)).into(viewHolder.ivCover);
+            //viewHolder.ivCover.setTag(tweet.getUser().getScreenName());
             //Picasso.with(getContext()).load(book.getPosterUrl()).into(viewHolder.ivCover);
             // Return the completed view to render on screen
+
+
+
             return convertView;
         }
+
 
 
 

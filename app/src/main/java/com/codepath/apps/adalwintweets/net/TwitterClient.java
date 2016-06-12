@@ -1,17 +1,13 @@
 package com.codepath.apps.adalwintweets.net;
-
 import android.content.Context;
 import android.util.Log;
-
 import com.codepath.apps.adalwintweets.models.PostRequestParams;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
-
 /*
  * 
  * This is the object responsible for communicating with a REST API. 
@@ -24,11 +20,10 @@ import org.scribe.builder.api.TwitterApi;
  * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
-
 public class TwitterClient extends OAuthBaseClient {
 	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
-	public static final String REST_URL = "https://api.twitter.com/1.1/"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "3ui9JxGJNDHxf7qGwgwvJW9lw";       // Change this
+	public static final String REST_URL = "https://api.twitter.com/1.1/";       // Change this, base API URL
+	public static final String REST_CONSUMER_KEY = "3ui9JxGJNDHxf7qGwgwvJW9lw"; // Change this
 	public static final String REST_CONSUMER_SECRET = "9TZdBnFqviiNIRsnj79LOKlTrDI1ENO55GcWqIJaBBhNxuAjcX"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://adalwintweets"; // Change this (here and in manifest)
 
@@ -42,10 +37,8 @@ public class TwitterClient extends OAuthBaseClient {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		Log.d("Response to Srting",params.toString());
-		Log.d("Response to Srting 1",String.valueOf(max_id));
+		Log.d("get home_timeline",params.toString());
 		params.put("count",25);
-
 		if(max_id>0){
 			params.put("max_id",(max_id-1));
 		}
@@ -53,20 +46,19 @@ public class TwitterClient extends OAuthBaseClient {
 			params.put("since_id",1);
 		}
 		getClient().get(apiUrl, params, handler);
-
 	}
 	//Composing a tweet
 	//https://api.twitter.com/1.1/users/show.json?screen_name=twitterdev
-	public void getUserInfo(JsonHttpResponseHandler handler) {
+	public void getUserInfo(String screenName, JsonHttpResponseHandler handler) {
+
 		String apiUrl = getApiUrl("users/show.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("screen_name","twitterdev");
+
+		params.put("screen_name",screenName);
+		Log.d("getUserInfo :: ",params.toString());
 		getClient().get(apiUrl, params, handler);
 
 	}
-	//Composin
-
 	//Composing a MESSAGE
 	//https://api.twitter.com/1.1/users/show.json?screen_name=twitterdev
 	public void postMessage(PostRequestParams postRequestParams,JsonHttpResponseHandler handler) {
@@ -75,11 +67,9 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("screen_name",postRequestParams.getTweetScreenName());
 		params.put("text",postRequestParams.getTweetBody());
-		System.out.println(postRequestParams.getTweetScreenName()+"This is"+postRequestParams.getTweetBody());
 		getClient().post(apiUrl, params, handler);
 
 	}
-
 	public void postTweet(PostRequestParams postRequestParams,JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/update.json");
 		// Can specify query string params directly or through RequestParams.
@@ -98,9 +88,42 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
 
-
 	public void getCurrentUser(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		getClient().get(apiUrl, handler);
 	}
+	public void getMentionsTimeLine(long max_id,JsonHttpResponseHandler handler){
+			String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+			// Can specify query string params directly or through RequestParams.
+			RequestParams params = new RequestParams();
+			Log.d("getMentionsTimeLine :: ",params.toString());
+
+			params.put("count",20);
+
+			if(max_id>0){
+				params.put("max_id",(max_id-1));
+			}
+			else{
+				params.put("since_id",1);
+			}
+			getClient().get(apiUrl, params, handler);
+	}
+
+	public void getUsersTimeLine(long max_id,String  screenName,JsonHttpResponseHandler handler){
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		Log.d("getUsersTimeLine :  ",params.toString());
+		params.put("screen_name",screenName);
+		params.put("count",20);
+		if(max_id>0){
+			params.put("max_id",(max_id-1));
+		}
+		else{
+			params.put("since_id",1);
+		}
+		getClient().get(apiUrl, params, handler);
+	}
+
 }
+

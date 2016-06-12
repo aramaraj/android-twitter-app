@@ -35,9 +35,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	@Override
 	public void onLoginSuccess() {
 		getLoggedInUserDetails();
-		Intent i = new Intent(this,TimelineActivity.class);
-		startActivity(i);
-		Toast.makeText(this, "Login Success	", Toast.LENGTH_SHORT).show();
+
 	}
 	private void getLoggedInUserDetails() {
 		TwitterApplication.getRestClient().getCurrentUser(new JsonHttpResponseHandler() {
@@ -47,8 +45,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 				User user = new User();
 				user=user.fromJSON(response);
 				TwitterApplication.setLoggedInUser(user);
+				startTimelineActivity();
 			}
-
 			@Override
 			public void onFailure(int statusCode,cz.msebera.android.httpclient.Header[] headers , Throwable error, JSONObject response) {
 				super.onFailure(statusCode,headers , error, response);
@@ -66,5 +64,11 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// This should be tied to a button used to login
 	public void loginToRest(View view) {
 		getClient().connect();
+	}
+
+	public void startTimelineActivity(){
+		Intent i = new Intent(this,TimelineActivity.class);
+		startActivity(i);
+		Toast.makeText(this, "Login Success	", Toast.LENGTH_SHORT).show();
 	}
 }

@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.codepath.apps.adalwintweets.activities.ProfileActivity">
+
+    <item
+        android:id="@+id/menu_item_profile"
+        app:showAsAction="always"
+        android:title="Profile"
+        android:icon="@mipmap/ic_launcher_twitter"
+       />
+</menu>
