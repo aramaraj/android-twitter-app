@@ -43,9 +43,7 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough 
 
-Here's a walkthrough of implemented user stories:
 
-Here's a walkthrough of implemented user stories:
 <img src='/TwitterDemo4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
@@ -59,6 +57,7 @@ Describe any challenges encountered while building the app.
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
 
 
+---------------------------------------
 
 
 # Project 3 - *Android-Twitter-App*
