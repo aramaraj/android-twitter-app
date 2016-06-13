@@ -12,10 +12,10 @@ import com.codepath.apps.adalwintweets.app.TwitterApplication;
 import com.codepath.apps.adalwintweets.fragments.UserTimeLineFragment;
 import com.codepath.apps.adalwintweets.models.User;
 import com.codepath.apps.adalwintweets.net.TwitterClient;
+import com.codepath.apps.adalwintweets.util.HtmlBuilder;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
-
 public class ProfileActivity extends AppCompatActivity {
     TwitterClient twitterClient;
     ImageView imageView;
@@ -33,10 +33,8 @@ public class ProfileActivity extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.ivProfileImage);
         tvFollowers = (TextView)findViewById(R.id.tvFollowers);
         tvFollowing = (TextView)findViewById(R.id.tvFollowing);
-
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
         User userObject =(User)getIntent().getSerializableExtra("userObject");
-
         //Get the Screen Name form the Logged in user
         if (userObject != null) {
             try {
@@ -53,7 +51,6 @@ public class ProfileActivity extends AppCompatActivity {
             getSupportActionBar().setIcon(R.mipmap.ic_launcher_twitter);
         }
         populateUserHeaderUi(userObject);
-
         if(savedInstanceState == null){
             //Create a UserTimeLineActivity
             UserTimeLineFragment userTimeLineFragment = UserTimeLineFragment.newInstance(userObject.getScreenName());
@@ -64,11 +61,20 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
     public void populateUserHeaderUi(User user){
-
         tvTitle.setText(user.getName());
         tvScreenName.setText("@"+user.getScreenName());
         Picasso.with(this).load(user.getProfileImage()).transform(new RoundedCornersTransformation(5,5)).into(imageView);
         tvFollowers.setText(user.getFollowersCount()+" Followers");
+
+
+        tvFollowers.setText(new HtmlBuilder().open(HtmlBuilder.Type.COLOR).
+                append(user.getFollowersCount()).
+                close(HtmlBuilder.Type.COLOR).
+                open(HtmlBuilder.Type.ITALIC).
+                append("  Followers").
+                close(HtmlBuilder.Type.ITALIC).
+                build()
+        );
         tvFollowing.setText(user.getFriendsCount()+" Following");
     }
 
