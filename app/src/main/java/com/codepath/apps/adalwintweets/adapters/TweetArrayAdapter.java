@@ -1,6 +1,7 @@
 package com.codepath.apps.adalwintweets.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,24 +10,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.adalwintweets.R;
-import com.codepath.apps.adalwintweets.app.TwitterApplication;
+import com.codepath.apps.adalwintweets.activities.ProfileActivity;
 import com.codepath.apps.adalwintweets.models.Tweet;
-import com.codepath.apps.adalwintweets.models.User;
-import com.codepath.apps.adalwintweets.net.TwitterClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
+
+
 /**
  * Created by aramar1 on 6/3/16.
  */
 public class TweetArrayAdapter  extends ArrayAdapter<Tweet>  {
-        TwitterClient twitterClient= TwitterApplication.getRestClient();
-         User userParcel;
+
         // View lookup cache
-        private static class ViewHolder {
+        private static class ViewHolder  {
             public ImageView ivCover;
             public TextView tvScreenName;
             public TextView tvUsernName;
@@ -34,7 +34,20 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet>  {
             public TextView created_at;
         }
 
-        public TweetArrayAdapter(Context context, ArrayList<Tweet> lTweets) {
+    // Define listener member variable
+    private static OnItemClickListener listener;
+    // Define the listener interface
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+    // Define the method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
+
+    public TweetArrayAdapter(Context context, ArrayList<Tweet> lTweets) {
             super(context, android.R.layout.simple_list_item_1, lTweets);
         }
         //overide advanced adapter
@@ -54,9 +67,9 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet>  {
                 viewHolder.tvScreenName = (TextView)convertView.findViewById(R.id.tvScreenName);
                 viewHolder.tvUsernName = (TextView)convertView.findViewById(R.id.tvUsernName);
                 viewHolder.body = (TextView)convertView.findViewById(R.id.tvBody);
-
                 viewHolder.created_at = (TextView)convertView.findViewById(R.id.tvDate);
                 convertView.setTag(viewHolder);
+
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
@@ -67,18 +80,21 @@ public class TweetArrayAdapter  extends ArrayAdapter<Tweet>  {
             viewHolder.tvUsernName.setText(tweet.getUser().getName());
             Picasso.with(getContext()).load(tweet.getUser().getProfileImage()).
                     transform(new RoundedCornersTransformation(5,5)).into(viewHolder.ivCover);
-            //viewHolder.ivCover.setTag(tweet.getUser().getScreenName());
+            viewHolder.ivCover.setTag(tweet.getUser().getScreenName());
+            viewHolder.ivCover.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View v)
+                {
+                    Intent myIntent = new Intent(v.getContext(), ProfileActivity.class);
+                    System.out.println();
+                    myIntent.putExtra("userObject",tweet.getUser());
+                    v.getContext().startActivity(myIntent);
+                }
+            });
             //Picasso.with(getContext()).load(book.getPosterUrl()).into(viewHolder.ivCover);
             // Return the completed view to render on screen
-
-
-
-            return convertView;
+        return convertView;
         }
-
-
-
-
 }
 
 

@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.apps.adalwintweets.R;
@@ -57,13 +58,19 @@ public class MentionsTimeLineFragment extends Fragment implements OnRefreshListe
         lvTimeline.setOnScrollListener(new EndlessRecylcerScrollerListener(){
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                System.out.println("739633557509918721 ON load more "+page +":::max_id_page"+max_id_page);
                 populateTimeline(max_id_page);
                 return true;
             }
             @Override
             public int getFooterViewType() {
                 return 0;
+            }
+        });
+
+        lvTimeline.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
             }
         });
 

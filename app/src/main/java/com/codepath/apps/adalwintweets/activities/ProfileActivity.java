@@ -23,8 +23,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tvScreenName;
     TextView tvFollowers;
     TextView tvFollowing;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
         User userObject =(User)getIntent().getSerializableExtra("userObject");
+
         //Get the Screen Name form the Logged in user
         if (userObject != null) {
             try {
@@ -54,20 +53,20 @@ public class ProfileActivity extends AppCompatActivity {
             getSupportActionBar().setIcon(R.mipmap.ic_launcher_twitter);
         }
         populateUserHeaderUi(userObject);
+
         if(savedInstanceState == null){
             //Create a UserTimeLineActivity
-            UserTimeLineFragment userTimeLineFragment = UserTimeLineFragment.newInstance(userObject.getName());
+            UserTimeLineFragment userTimeLineFragment = UserTimeLineFragment.newInstance(userObject.getScreenName());
             //Display the User Fragment Dynamically
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.flContainer,userTimeLineFragment);
             fragmentTransaction.commit();
         }
     }
-
     public void populateUserHeaderUi(User user){
 
         tvTitle.setText(user.getName());
-        tvScreenName.setText(user.getScreenName());
+        tvScreenName.setText("@"+user.getScreenName());
         Picasso.with(this).load(user.getProfileImage()).transform(new RoundedCornersTransformation(5,5)).into(imageView);
         tvFollowers.setText(user.getFollowersCount()+" Followers");
         tvFollowing.setText(user.getFriendsCount()+" Following");

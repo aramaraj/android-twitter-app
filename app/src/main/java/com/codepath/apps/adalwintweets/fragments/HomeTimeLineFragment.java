@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.apps.adalwintweets.R;
@@ -50,7 +49,6 @@ public class HomeTimeLineFragment extends Fragment implements OnRefreshListener 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         lvTimeline= (ListView)view.findViewById(R.id.lvTweets);
         // Setup refresh listener which triggers new data loading
-
         swipeContainer.setOnRefreshListener(this);
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -82,14 +80,6 @@ public class HomeTimeLineFragment extends Fragment implements OnRefreshListener 
                 populateTimeline(max_id_page);
             }
         });
-
-        lvTimeline.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-       
-    });
 
 
         return view;
@@ -140,9 +130,6 @@ public class HomeTimeLineFragment extends Fragment implements OnRefreshListener 
         });
 
     }
-    //make an async request and list view
-    public void addTweetsToTimeline() {
-        populateTimeline(0);
-    }
+
 
 }

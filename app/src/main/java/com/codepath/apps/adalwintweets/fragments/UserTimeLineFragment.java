@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.codepath.apps.adalwintweets.R;
 import com.codepath.apps.adalwintweets.adapters.TweetArrayAdapter;
 import com.codepath.apps.adalwintweets.app.TwitterApplication;
@@ -17,12 +16,9 @@ import com.codepath.apps.adalwintweets.models.Tweets;
 import com.codepath.apps.adalwintweets.net.TwitterClient;
 import com.codepath.apps.adalwintweets.util.EndlessRecylcerScrollerListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -55,8 +51,6 @@ public class UserTimeLineFragment extends Fragment implements SwipeRefreshLayout
         View view = inflater.inflate(R.layout.fragement_tweets_list,parent,false);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         lvTimeline= (ListView)view.findViewById(R.id.lvTweets);
-
-
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(this);
         // Configure the refreshing colors
